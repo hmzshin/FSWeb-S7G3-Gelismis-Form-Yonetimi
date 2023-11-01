@@ -13,7 +13,7 @@ const emptyData = {
   last_name: "",
 };
 
-const LoginForm = ({ fetchData }) => {
+const LoginForm = ({ addNewUser }) => {
   const [userInfo, setUserInfo] = useState(emptyData);
 
   const [formError, setFormError] = useState(emptyData);
@@ -57,7 +57,7 @@ const LoginForm = ({ fetchData }) => {
       .post("https://reqres.in/api/users", userInfo)
       .then(function (response) {
         console.log("post request is succesful", response);
-        fetchData();
+        addNewUser(userInfo);
       })
       .catch(function (error) {
         console.log(error);
