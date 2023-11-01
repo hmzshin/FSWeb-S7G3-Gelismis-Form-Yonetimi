@@ -1,0 +1,38 @@
+.App {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-self: center;
+  margin-top: 50px;
+}
+
+form {
+  padding: 10px;
+  margin-top: 40px;
+  max-width: 500px;
+  background-color: dimgray;
+  color: white;
+}
+
+.users {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.personcard {
+  width: 180px;
+  height: 250px;
+}
+
+.personcard img {
+  width: 150px;
+  height: 150px;
+}
+form {
+  min-width: 500px;
+  max-height: 300px;
+  align-items: center;
+  position: sticky;
+}
