@@ -6,11 +6,11 @@ import axios from "axios";
 function App() {
   const [user, setUser] = useState(null);
 
-  useEffect(() => {
+  const fetchData = () => {
     axios
       .get("https://reqres.in/api/users")
       .then((response) => {
-        console.log("fetched data", response.data.data);
+        console.log("fetched data", response.data);
         setUser(response.data.data);
       })
       .catch((error) => {
@@ -19,11 +19,15 @@ function App() {
       .finally(() => {
         console.log("fetch request is completed");
       });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (
     <div className="App">
-      <LoginForm />
+      <LoginForm fetchData={fetchData} />
     </div>
   );
 }
