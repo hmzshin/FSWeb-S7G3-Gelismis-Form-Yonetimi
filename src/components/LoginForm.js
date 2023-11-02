@@ -99,13 +99,14 @@ const LoginForm = ({ addNewUser }) => {
         <Form.Group as={Col} controlId="formGridCity">
           <Form.Label>Surname</Form.Label>
           <Form.Control
+            id="form_surname_area"
             type="text"
             placeholder="Surname"
             onChange={onChangeHandler}
             name="last_name"
             isInvalid={!!formError["last_name"]}
           />
-          <Form.Control.Feedback type="invalid">
+          <Form.Control.Feedback id="form_surname_area_validty" type="invalid">
             {formError["last_name"]}
           </Form.Control.Feedback>
         </Form.Group>
