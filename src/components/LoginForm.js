@@ -11,6 +11,7 @@ const emptyData = {
   first_name: "",
   id: "",
   last_name: "",
+  tersm_of_use: false,
 };
 
 const LoginForm = ({ addNewUser }) => {
@@ -33,11 +34,12 @@ const LoginForm = ({ addNewUser }) => {
       .required("Required!"),
     email: Yup.string().email("Invalid email!").required("Can not be empty"),
     avatar: Yup.string().url("Invalid url").required("Can not be empty"),
+    tersm_of_use: Yup.boolean().oneOf([false], "Required!"),
   });
 
   const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setUserInfo({ ...userInfo, [name]: value });
+    const { name, value, type, checked } = e.target;
+    setUserInfo({ ...userInfo, [name]: type == "checkbox" ? checked : value });
 
     Yup.reach(formSchema, name)
       .validate(value)
@@ -56,8 +58,8 @@ const LoginForm = ({ addNewUser }) => {
     axios
       .post("https://reqres.in/api/users", userInfo)
       .then(function (response) {
-        console.log("post request is succesful", response);
-        addNewUser(userInfo);
+        console.log("post request is succesful", response.data);
+        addNewUser(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -138,7 +140,12 @@ const LoginForm = ({ addNewUser }) => {
       </Row>
 
       <Form.Group className="mb-3" id="formGridCheckbox">
-        <Form.Check type="checkbox" label="Terms of Servives" />
+        <Form.Check
+          name="tersm_of_use"
+          type="checkbox"
+          label="Terms of Servives"
+          onChange={onChangeHandler}
+        />
       </Form.Group>
 
       <Button variant="primary" type="submit">
