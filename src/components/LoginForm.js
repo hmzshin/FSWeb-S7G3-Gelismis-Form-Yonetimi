@@ -11,7 +11,7 @@ const emptyData = {
   first_name: "",
   id: "",
   last_name: "",
-  tersm_of_use: false,
+  terms_of_use: false,
 };
 
 const LoginForm = ({ addNewUser }) => {
@@ -23,7 +23,7 @@ const LoginForm = ({ addNewUser }) => {
 
   const formSchema = Yup.object().shape({
     first_name: Yup.string()
-      .required("Can  not be empty")
+      .required("Can not be empty")
       .min(3, "Can not be less then 3 characters")
       .max(20, "Can not be more then 20 characters")
       .required("Required!"),
@@ -34,19 +34,27 @@ const LoginForm = ({ addNewUser }) => {
       .required("Required!"),
     email: Yup.string().email("Invalid email!").required("Can not be empty"),
     avatar: Yup.string().url("Invalid url").required("Can not be empty"),
-    tersm_of_use: Yup.boolean().oneOf([false], "Required!"),
+    terms_of_use: Yup.boolean().oneOf([true], "Required!"),
   });
 
   const onChangeHandler = (e) => {
     const { name, value, type, checked } = e.target;
-    setUserInfo({ ...userInfo, [name]: type == "checkbox" ? checked : value });
+    setUserInfo({ ...userInfo, [name]: type != "checkbox" ? value : checked });
+
+    console.log("checked:", checked);
 
     Yup.reach(formSchema, name)
       .validate(value)
       .then((valid) => {
-        setFormError({ ...formError, [name]: "" });
+        console.log("valid", valid);
+        if (name == "terms_of_use") {
+          setFormError({ ...formError, [name]: false });
+        } else {
+          setFormError({ ...formError, [name]: "" });
+        }
       })
       .catch((error) => {
+        console.log("error", error);
         setFormError({ ...formError, [name]: error.errors[0] });
       });
   };
@@ -54,6 +62,10 @@ const LoginForm = ({ addNewUser }) => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     console.log("submit handler", userInfo);
+
+    // const eror_arr = Object.values(formError).map((value) =>
+    //   console.log("map ", value)
+    // );
 
     axios
       .post("https://reqres.in/api/users", userInfo)
@@ -67,17 +79,18 @@ const LoginForm = ({ addNewUser }) => {
   };
 
   useEffect(() => {
-    console.log(userInfo);
+    console.log("user info", userInfo);
   }, [userInfo]);
 
   useEffect(() => {
     formSchema.isValid(userInfo).then((valid) => {
+      console.log("valid", valid);
       setFormValid(valid);
     });
   }, [userInfo]);
 
   useEffect(() => {
-    console.log("form error =>", formError);
+    console.log("form error: ", formError);
   }, [formError]);
   return (
     <Form onSubmit={onSubmitHandler}>
@@ -85,26 +98,34 @@ const LoginForm = ({ addNewUser }) => {
         <Form.Group as={Col} controlId="formGridCity">
           <Form.Label>Name</Form.Label>
           <Form.Control
+            className="form_name_area"
             type="text"
             placeholder="Name"
             onChange={onChangeHandler}
             name="first_name"
             isInvalid={!!formError["first_name"]}
           />
-          <Form.Control.Feedback type="invalid">
+          <Form.Control.Feedback
+            className="form_name_area_validty"
+            type="invalid"
+          >
             {formError["first_name"]}
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group as={Col} controlId="formGridCity">
           <Form.Label>Surname</Form.Label>
           <Form.Control
+            className="form_surname_area"
             type="text"
             placeholder="Surname"
             onChange={onChangeHandler}
             name="last_name"
             isInvalid={!!formError["last_name"]}
           />
-          <Form.Control.Feedback type="invalid">
+          <Form.Control.Feedback
+            className="form_surname_area_validty"
+            type="invalid"
+          >
             {formError["last_name"]}
           </Form.Control.Feedback>
         </Form.Group>
@@ -114,13 +135,14 @@ const LoginForm = ({ addNewUser }) => {
         <Form.Group as={Col} controlId="formGridEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
+            className="form_email_input"
             type="email"
             placeholder="Enter email"
             onChange={onChangeHandler}
             name="email"
             isInvalid={!!formError.email}
           />
-          <Form.Control.Feedback type="invalid">
+          <Form.Control.Feedback className="form_email_validty" type="invalid">
             {formError.email}
           </Form.Control.Feedback>
         </Form.Group>
@@ -141,14 +163,14 @@ const LoginForm = ({ addNewUser }) => {
 
       <Form.Group className="mb-3" id="formGridCheckbox">
         <Form.Check
-          name="tersm_of_use"
+          name="terms_of_use"
           type="checkbox"
           label="Terms of Servives"
           onChange={onChangeHandler}
         />
       </Form.Group>
 
-      <Button variant="primary" type="submit">
+      <Button className="submitButton" variant="primary" type="submit">
         Send
       </Button>
     </Form>
