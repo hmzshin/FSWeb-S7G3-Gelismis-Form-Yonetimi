@@ -87,6 +87,9 @@ describe("Submitting an inaccurate form", () => {
   it("enter a invalid name", () => {
     cy.get(".form_name_area").type("Lo");
     cy.get(".submitButton").click();
-    cy.get(".users").should("have.length", 6);
+    cy.get(".users .personcard")
+      .should("have.length", 6)
+      .first()
+      .should("have.text", "George");
   });
 });
