@@ -170,7 +170,7 @@ const LoginForm = ({ addNewUser }) => {
         />
       </Form.Group>
 
-      <Button variant="primary" type="submit">
+      <Button className="submitButton" variant="primary" type="submit">
         Send
       </Button>
     </Form>

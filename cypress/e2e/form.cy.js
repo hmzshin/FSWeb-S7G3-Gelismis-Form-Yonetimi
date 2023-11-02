@@ -78,3 +78,15 @@ describe("User Log in Validation Tests", () => {
     cy.get(".form_email_validty").should("not.be.visible");
   });
 });
+
+describe("Submitting an inaccurate form", () => {
+  beforeEach(() => {
+    cy.visit("http://localhost:3000/");
+  });
+
+  it("enter a invalid name", () => {
+    cy.get(".form_name_area").type("Lo");
+    cy.get(".submitButton").click();
+    cy.get(".users").should("have.length", 6);
+  });
+});
