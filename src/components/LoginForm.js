@@ -23,7 +23,7 @@ const LoginForm = ({ addNewUser }) => {
 
   const formSchema = Yup.object().shape({
     first_name: Yup.string()
-      .required("Can  not be empty")
+      .required("Can not be empty")
       .min(3, "Can not be less then 3 characters")
       .max(20, "Can not be more then 20 characters")
       .required("Required!"),
@@ -85,13 +85,14 @@ const LoginForm = ({ addNewUser }) => {
         <Form.Group as={Col} controlId="formGridCity">
           <Form.Label>Name</Form.Label>
           <Form.Control
+            id="form_name_area"
             type="text"
             placeholder="Name"
             onChange={onChangeHandler}
             name="first_name"
             isInvalid={!!formError["first_name"]}
           />
-          <Form.Control.Feedback type="invalid">
+          <Form.Control.Feedback id="form_name_area_validty" type="invalid">
             {formError["first_name"]}
           </Form.Control.Feedback>
         </Form.Group>
